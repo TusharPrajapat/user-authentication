@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express(); //Creating express server
+
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const authRoute = require("./Routes/AuthRoute");
 const { MONGO_URL, PORT } = process.env;
 
 mongoose
@@ -19,7 +22,6 @@ app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
 
-app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:5173"],
@@ -27,3 +29,7 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
+app.use(express.json());
+app.use("/", authRoute);
